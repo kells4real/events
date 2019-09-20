@@ -1,0 +1,19 @@
+<html>
+
+
+<form action="{% url 'app:search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+{% for events in object_list %}
+    {% if events.approved == True %}
+    <ul>
+    <li>{{ events.title }}</li>
+        {% if events.flyer %}
+    <img src="{{ events.flyer.url }}" style="height: 15%; width: 10%;">
+            {% endif %}
+    <li>{{ events.category }}</li>
+    {% endif %}
+</ul>
+{% endfor %}
+</html>

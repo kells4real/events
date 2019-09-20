@@ -1,0 +1,15 @@
+<h1>Search Results</h1>
+
+<ul>
+{% for events in object_list %}
+    {% if events.approved == True %}
+    <ul>
+    <li>{{ events.title }}</li>
+        {% if events.flyer %}
+    <img src="{{ events.flyer.url }}" style="height: 15%; width: 10%;">
+    <li>{{ events.category }}</li>
+            {% endif %}
+    {% endif %}
+</ul>
+{% endfor %}
+</ul>

@@ -1,0 +1,37 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="card">
+        <div class="card-header">
+            <h1><b>{{ object.title }}</b></h1>
+        </div>
+        <div class="card-body">
+        {% if object.author %}
+                	<h4>
+                        Author: {{ object.author.username }}</h4>
+
+        {% endif %}
+
+            	{% if object.description %}
+    	<tr>
+            <h4>Description</h4>
+            <p>{{ object.description }}</p>
+        </tr>
+    	{% endif %}
+
+        <table class="table">
+
+
+        {% if object.tickettype_set %}
+        {% for ticket in object.tickettype_set.all %}
+        <tr>
+            <th>Ticket Name: {{ticket.name}}</th>
+            <td>Price: {{ticket.amount}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+        </table>
+        <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>
+        <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>
+        </div>
+</div>
+{% endblock content %}
