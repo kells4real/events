@@ -19,23 +19,15 @@ TicketTypeFormSet = inlineformset_factory(
     )
 
 
-class DateForm(forms.ModelForm):
-
-    class Meta:
-        model = Date
-        exclude = ()
-
-
-DateFormSet = inlineformset_factory(
-    Event, Date, form=DateForm,
-    fields=['start_date', 'end_date'], extra=1, can_delete=True
-    )
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 
 class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
+        widgets = {'start_date': DateInput(), 'end_date': DateInput()}
         exclude = ['author', 'slug']
 
     def __init__(self, *args, **kwargs):
@@ -51,6 +43,8 @@ class EventForm(forms.ModelForm):
                 Field('flyer'),
                 Field('description'),
                 Field('category'),
+                Field('start_date'),
+                Field('end_date'),
                 Fieldset('Add tickets',
                     Formset('titles')),
                 HTML("<br>"),
