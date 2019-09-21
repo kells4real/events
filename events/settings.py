@@ -83,8 +83,8 @@ DATABASES = {
         'OPTIONS': {
             'sql_mode': 'traditional'},
         'NAME': 'events',
-        'USER': 'kells',
-        'PASSWORD': 'Stalking26',
+        'USER': os.environ.get("DB_USERNAME"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
     }
 }
 
@@ -138,5 +138,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "jakesullivan138@gmail.com"
-EMAIL_HOST_PASSWORD = "jutujarwidpwxech"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
