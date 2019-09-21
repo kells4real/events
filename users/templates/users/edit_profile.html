@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+     <div class="content">
+            {% if messages %}
+             <div>
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}" style="color:Green;">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+             </div>
+            {% endif %}
+
+    <div class="content-section">
+      <div class="media">
+          <div style="align-content: center; ">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" style="width:200px; height: 200px;">
+          </div>
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+          <p class="text-secondary">{{ user.last_login }}</p>
+        </div>
+      </div>
+        <div class="content-section" style="position: relative; margin:auto; width:500px; height: auto; margin-top: auto; margin-bottom: 50px; padding:25px;background: #fff; box-shadow: 0px 0px 15px 0px #eee">
+
+      <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Edit Your Staff Profile Info</legend>
+              <h4>Personal Details</h4>
+              {{ u_form|crispy }}
+              {{ p_form|crispy }}
+              {% if high_form %}
+              <h4>Highest Degree Qualification</h4>
+              {{ high_form|crispy }}
+              {% endif %}
+          </fieldset>
+          <div class="form-group">
+              <button class="btn btn-outline-info" type="submit">Update Staff Profile</button>
+          </div>
+      </form>
+    </div>
+    </div>
+     </div>
+{% endblock content %}

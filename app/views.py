@@ -6,8 +6,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.db.models import Q
-
+from datetime import date
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class EventDetailView(DetailView):
@@ -24,6 +27,15 @@ class Home(ListView):
     model = Event
     template_name = 'app/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
+        context['today'] = date.today()
+
+        return context
+
+    def get_queryset(self):
+        return Event.objects.all().order_by('-end_date')
+
 
 class SearchResultsView(ListView):
     model = Event
@@ -37,7 +49,7 @@ class SearchResultsView(ListView):
         return object_list
 
 
-class EventCreate(CreateView):
+class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     template_name = 'app/event_create.html'
     form_class = EventForm
@@ -66,7 +78,7 @@ class EventCreate(CreateView):
         return reverse_lazy('app:event_detail', kwargs={'slug': self.object.slug})
 
 
-class EventUpdate(UpdateView):
+class EventUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = 'app/event_create.html'
@@ -90,18 +102,26 @@ class EventUpdate(UpdateView):
                 titles.save()
         return super(EventUpdate, self).form_valid(form)
 
+    def test_func(self):
+        event = self.get_object()
+        if self.request.user == event.author:
+            return True
+        return False
+
     def get_success_url(self):
         return reverse_lazy('app:event_detail', kwargs={'slug': self.object.slug})
 
-    # @method_decorator(login_required)
-    # def dispatch(self, *args, **kwargs):
-    #     return super(CollectionUpdate, self).dispatch(*args, **kwargs)
 
-
-class EventDelete(DeleteView):
+class EventDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Event
     template_name = 'app/confirm_delete.html'
     success_url = reverse_lazy('app:home')
     slug_url_kwarg = 'slug'
     query_pk_and_slug = True
+
+    def test_func(self):
+        event = self.get_object()
+        if self.request.user == event.author:
+            return True
+        return False
 

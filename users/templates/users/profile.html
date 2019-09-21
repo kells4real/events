@@ -1,0 +1,166 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+     <div class="content">
+            {% if messages %}
+             <div>
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}" style="color:Green;">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+             </div>
+            {% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static 'users/W3.CSS Template_files/w3.css' %}">
+<link rel="stylesheet" href="{% static 'users/W3.CSS Template_files/css' %}">
+<link rel="stylesheet" href="{% static 'users/W3.CSS Template_files/font-awesome.min.css'%}">
+<link rel="stylesheet" href="{% static 'users/W3.CSS Template_files/button.css'%}">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+</style>
+<link id="avast_os_ext_custom_font" href="chrome-extension://eofcbnmajmjmplflapaojjnihcjkigck/common/ui/fonts/fonts.css" rel="stylesheet" type="text/css"><body class="w3-light-grey">
+
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding" style="margin-top: 50px">
+
+    <!-- Left Column -->
+    <div class="w3-third">
+
+      <div class="w3-white w3-text-grey w3-card-4">
+        <div class="w3-display-container">
+          <img src="{{ user.profile.image.url }}" style="width:100%" alt="Avatar">
+          <div class="w3-display-bottomleft w3-container w3-text-black">
+            <h2>{{ user.username }}</h2>
+          </div>
+        </div>
+        <div class="w3-container">
+            <br>
+          <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>{{ user.first_name }} {{ user.last_name }}</p>
+          <p><i class="fa fa-institution fa-fw w3-margin-right w3-large w3-text-teal"></i>Office: Warri, NG</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email: {{ user.email }}</p>
+          <p><i class="fa fa-clock-o fa-fw w3-margin-right w3-large w3-text-teal"></i>User Last Logged in: {{ user.last_login }}</p>
+          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>State Of Origin: {{ user.profile.state }}</p>
+          <p><i class="fa fa-male fa-fw w3-margin-right w3-large w3-text-teal"></i>Staff Positon: {{ user.profile.staff }}</p>
+          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Phone No: {{ user.profile.phone }}</p>    
+          <p><i class="fa fa-female fa-fw w3-margin-right w3-large w3-text-teal"></i>Marrital Status: {{ user.profile.marrital_status }}</p>           
+          <hr>
+
+                    <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+            {% if user.profile.python %}
+          <p>PYTHON</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{user.profile.python}}%">{{user.profile.python}}%</div>
+          </div>
+                <p></p>
+            {% endif %}
+            {% if user.profile.php %}
+          <p>PHP</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{user.profile.php}}%">
+              <div class="w3-center w3-text-white">{{user.profile.php}}%</div>
+            </div>
+          </div>
+                <p></p>
+            {% endif %}
+         {% if user.profile.html_css %}
+          <p>HTML/CSS</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ user.profile.html_css }}%">{{ user.profile.html_css }}%</div>
+          </div>
+             <p></p>
+            {% endif %}
+            {% if user.profile.javascript %}
+          <p>JAVASCRIPT</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ user.profile.javascript }}%">{{ user.profile.javascript }}%</div>
+          </div>
+                <p></p>
+            {% endif %}
+              {% if user.profile.wordpress %}
+          <p>WORDPRESS</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ user.profile.wordpress }}%">{{ user.profile.wordpress }}%</div>
+          </div>
+                  <p></p>
+            {% endif %}
+            {% if user.profile.csharp %}
+             <p>C#</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ user.profile.csharp }}%">{{ user.profile.csharp }}%</div>
+          </div>
+                <p></p>
+            {% endif %}
+                <br>
+        </div>
+      </div><br>
+
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-twothird">
+
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Bio</h2>
+        <div class="w3-container">
+
+            <h6 style="color: #0056b3; text-shadow: 2px 3px 2px #ccc; color: #666" ><font style="font-size: 25px"> &quot;</font> {{ user.profile.bio }}<font style="font-size: 25px"> &quot;</font></h6>
+
+          <hr>
+        </div>
+      </div>
+      
+          <div class="w3-twothird">
+
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-home fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Home Address</h2>
+        <div class="w3-container">
+
+            <h6 style="color: #0056b3; text-shadow: 1px 1px 1px #ccc; color: #666" ><font style="font-size: 25px"> &quot;</font> {{ user.profile.address }}<font style="font-size: 25px"> &quot;</font></h6>
+
+          <hr>
+        </div>
+
+      </div>
+
+      <div class="w3-container w3-card w3-white">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Education</h2>
+     
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>{{ user.profile.highereducation.school }}</b></h5>
+          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>{{ user.profile.highereducation.from_date }} - {{ user.profile.highereducation.to_date }}</h6>
+          <p>{{ user.profile.highereducation.degree }}</p>
+          <hr>
+          
+                   <br>
+
+            <a href="{% url 'edit_profile' %}"><button class="button" style="vertical-align:middle" ><span>Edit Profile</span></button></a>
+            <p></p>
+            
+        </div>
+      
+      </div>
+
+    <!-- End Right Column -->
+    </div>
+
+  <!-- End Grid -->
+  </div>
+
+  <!-- End Page Container -->
+</div>
+    {% else %}
+    <div class="w3-container">
+        <h2 class="w3-opacity" style="margin-left: 100px; margin-right: 100px; margin-bottom: 160px; margin-top: 160px;">You must be logged in to view this page. Are you a staff? <a href="{% url 'login' %}"> Login Now </a></h2>
+
+        </div>
+{% endif %}
+
+
+{% endblock content %}

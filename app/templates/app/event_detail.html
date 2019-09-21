@@ -1,37 +1,141 @@
 {% extends "app/base.html" %}
 {% block content %}
-<div class="card">
-        <div class="card-header">
-            <h1><b>{{ object.title }}</b></h1>
+{#<div class="card">#}
+{#        <div class="card-header">#}
+{#            <h1><b>{{ object.title }}</b></h1>#}
+{#        </div>#}
+{#        <div class="card-body">#}
+{#        {% if object.author %}#}
+{#                	<h4>#}
+{#                        Author: {{ object.author.username }}</h4>#}
+{##}
+{#        {% endif %}#}
+{##}
+{#            	{% if object.description %}#}
+{#    	<tr>#}
+{#            <h4>Description</h4>#}
+{#            <p>{{ object.description }}</p>#}
+{#        </tr>#}
+{#    	{% endif %}#}
+{##}
+{#        <table class="table">#}
+{##}
+{##}
+{#        {% if object.tickettype_set %}#}
+{#        {% for ticket in object.tickettype_set.all %}#}
+{#        <tr>#}
+{#            <th>Ticket Name: {{ticket.name}}</th>#}
+{#            <td>Price: {{ticket.amount}}</td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#        {% endif %}#}
+{#        </table>#}
+{#        <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>#}
+{#        <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>#}
+{#        </div>#}
+{#</div>#}
+{##}
+
+    <!-- Start banner Area -->
+    <section class="banner-area relative">
+        <div class="overlay overlay-bg"></div>
+        <div class="container box_1170">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="about-content col-lg-12">
+                    <h1 class="text-white">
+                        Blog Post Details
+                    </h1>
+                    <p class="text-white link-nav"><a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span>
+                        <a href="#"> Blog</a> <span class="lnr lnr-arrow-right"></span>
+                        <a href="blog-details.html"> Blog Details</a></p>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-        {% if object.author %}
-                	<h4>
-                        Author: {{ object.author.username }}</h4>
+    </section>
+    <!-- End banner Area -->
 
-        {% endif %}
+    <!-- Blog Area -->
+    <section class="blog_area section-gap single-post-area">
+        <div class="container box_1170">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="main_blog_details">{% if object.flyer %}
+                        <img class="img-fluid" src="{{ object.flyer.url }}" alt="">{% endif %}
+                        <h4>{{ object.title }}</h4>
+                        <div class="user_details">
+                            <div class="float-left">
+                                {% if object.category %}<a href="#">{{ object.category }}</a>{% endif %}
+                            </div>
+{#                            <div class="float-right">#}
+{#                                <div class="media">#}
+{#                                    <div class="media-body">#}
+{#                                        <h5>Mark wiens</h5>#}
+{#                                        <p>12 Dec, 2017 11:21 am</p>#}
+{#                                    </div>#}
+{#                                    <div class="d-flex">#}
+{#                                        <img src="img/blog/user-img.jpg" alt="">#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+                        </div>
+                       <p>{{ object.description }}</p>
+                        <blockquote class="blockquote">
+                            <p class="mb-0">Venue: {{ object.venue }}</p>
+                            <p class="mb-0">State: {{ object.state }} </p>
+                            <p class="mb-0">Date: {% if object.start_date and object.start_date < object.end_date %}{{ object.start_date }} - {% endif %}{{ object.end_date }}</p>
+                            <p class="mb-0">Time: {% if object.start_time %}{{ object.start_time }}{% endif %} - {% if object.end_time %}{{ object.end_time }} {% endif %} </p>
+                        </blockquote>
 
-            	{% if object.description %}
-    	<tr>
-            <h4>Description</h4>
-            <p>{{ object.description }}</p>
-        </tr>
-    	{% endif %}
-
-        <table class="table">
-
-
-        {% if object.tickettype_set %}
-        {% for ticket in object.tickettype_set.all %}
-        <tr>
-            <th>Ticket Name: {{ticket.name}}</th>
-            <td>Price: {{ticket.amount}}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-        </table>
-        <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>
-        <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>
+                            <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>
+                            <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>
+                        <div class="news_d_footer">
+                            <a href="#"><i class="lnr lnr lnr-heart"></i>Lily and 4 people like this</a>
+                            <a class="justify-content-center ml-auto" href="#"><i class="lnr lnr lnr-bubble"></i>06
+                                Comments</a>
+                            <div class="news_socail ml-auto">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                                <a href="#"><i class="fa fa-rss"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navigation-area">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                <div class="thumb">
+                                    <a href="#"><img class="img-fluid" src="img/blog/prev.jpg" alt=""></a>
+                                </div>
+                                <div class="arrow">
+                                    <a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
+                                </div>
+                                <div class="detials">
+                                    <p>Prev Post</p>
+                                    <a href="#">
+                                        <h4>A Discount Toner</h4>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                <div class="detials">
+                                    <p>Next Post</p>
+                                    <a href="#">
+                                        <h4>Cartridge Is Better</h4>
+                                    </a>
+                                </div>
+                                <div class="arrow">
+                                    <a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
+                                </div>
+                                <div class="thumb">
+                                    <a href="#"><img class="img-fluid" src="img/blog/next.jpg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-</div>
+    </section>
+
+
 {% endblock content %}

@@ -13,3 +13,4 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Hashtag, HastagAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(TicketType)
+admin.site.register(State)

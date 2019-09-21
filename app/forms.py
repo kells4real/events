@@ -23,11 +23,16 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+class TimeInput(forms.TimeInput):
+    input_type = 'time'
+
+
 class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        widgets = {'start_date': DateInput(), 'end_date': DateInput()}
+        widgets = {'start_date': DateInput(), 'end_date': DateInput(),
+                   'start_time': TimeInput(), 'end_time': TimeInput()}
         exclude = ['author', 'slug']
 
     def __init__(self, *args, **kwargs):
@@ -43,9 +48,16 @@ class EventForm(forms.ModelForm):
                 Field('flyer'),
                 Field('description'),
                 Field('category'),
+                HTML('<br>'),
+                Fieldset('LOCATION'),
+                Field('venue'),
+                Field('state'),
                 Field('start_date'),
                 Field('end_date'),
-                Fieldset('Add tickets',
+                Field('start_time'),
+                Field('end_time'),
+                HTML("<br>"),
+                Fieldset('TICKET CATEGORIES',
                     Formset('titles')),
                 HTML("<br>"),
                 ButtonHolder(Submit('submit', 'Save')),

@@ -1,0 +1,70 @@
+{% extends 'web/base4.html' %}
+{% load static %}
+{% block content %}
+
+        <div class="top_bg" style="width: 100%; background: url({% static 'web/images/bg_5.jpg' %}); background-size: cover;  background-attachment: cover !important">
+            <div style="position:absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.3);">
+                <div class="tagline">
+                    <h1>Our Projects</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container  mt-5 mb-5">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="pr_desc">
+                    <h1>Project: <span>#{{ object.id }}</span></h1>
+                    <p>{{ object.text }}</p>
+                </div>
+
+                <div class="pr_info">
+                    <h1>Information</h1>
+                    <ul>
+                        <li><span class="fa fa-edit"></span> <b>Project ID:</b> {{ object.id }}</li>
+                        <li><span class="fa fa-tag"></span> <b>Name:</b> {{ object.title }}</li>
+                        <li><span class="fa fa-user"></span> <b>Client:</b> {{ object.title }}</li>
+                        <li><span class="fa fa-clock-o"></span> <b>Duration:</b> Mar 2019 - Apr 2019</li>
+                        <li><span class="fa fa-globe"></span> <b>Preview URL:</b> {{ object.link }}</li>
+                    </ul>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'portfolio-edit' portfolio.slug %}" style="color: #002752; text-shadow: #1b1e21; ">Edit Portfolio</a>
+            <a href="{% url 'portfolio-new' %}" style="color: #002752; text-shadow: #1b1e21; ">Add Portfolio</a>
+                <a href= "{% url 'portfolio-delete' portfolio.slug %}" style="color: #002752; text-shadow: #1b1e21; ">Delete Portfolio</a>
+            {% endif %}
+
+                    <a href="{{ object.link }}" target="_blank"><button>Visit Project</button></a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="pr_shot">
+{#                    {% if object.topbanner %}#}
+    <a href="{{ object.topbanner.url }}" target="_blank"><img src="{{ object.topbanner.url }}" width="100%" height="100%" alt=""/></a>
+{#  {% else %}#}
+             <img  style="height: 500px; width: 500px;" src="{% static 'web/images/default.jpg' %}">
+{#  {% endif %}#}
+{#                {% if object.img1 %}#}
+                    <a href="{{ object.img1.url }}" target="_blank"><img src="{{ object.img1.url }}" width="100%" height="100%" alt=""/></a>
+{#                {% endif %}#}
+                {% if object.img2 %}
+                    <a href="{{ object.img2.url }}" target="_blank"><<img src="{{ object.img2.url }}" width="100%" height="100%" alt=""/></a>
+                {% endif %}
+                {% if object.img3 %}
+                    <a href="{{ object.img3.url }}" target="_blank"><<img src="{{ object.img3.url }}" width="100%" height="100%" alt=""/></a>
+                {% endif %}
+                {% if object.img4 %}
+                    <a href="{{ object.img4.url }}" target="_blank"><<img src="{{ object.img4.url }}" width="100%" height="100%" alt=""/></a>
+                {% endif %}
+                {% if object.img5 %}
+                    <a href="{{ object.img5.url }}" target="_blank"><<img src="{{ object.img5.url }}" width="100%" height="100%" alt=""/></a>
+                {% endif %}
+
+                    <span class="fa fa-angle-left ltr"></span> <span class="fa fa-angle-right rtr"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   {% endblock content %}
