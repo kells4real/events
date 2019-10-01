@@ -43,11 +43,11 @@
             <div class="row d-flex align-items-center justify-content-center">
                 <div class="about-content col-lg-12">
                     <h1 class="text-white">
-                        Blog Post Details
+                        Event Details
                     </h1>
-                    <p class="text-white link-nav"><a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span>
-                        <a href="#"> Blog</a> <span class="lnr lnr-arrow-right"></span>
-                        <a href="blog-details.html"> Blog Details</a></p>
+                    <p class="text-white link-nav"><a href="{% url 'app:home' %}">Home </a> <span class="lnr lnr-arrow-right"></span>
+                        <a href="{% url 'app:category' object.category.slug %}">{{ object.category }}</a> <span class="lnr lnr-arrow-right"></span>
+                        <a href="{% url 'app:event_detail' object.slug %}"> Event Details</a></p>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                         <h4>{{ object.title }}</h4>
                         <div class="user_details">
                             <div class="float-left">
-                                {% if object.category %}<a href="#">{{ object.category }}</a>{% endif %}
+                                {% if object.category %}<a href="{% url 'app:category' object.category.slug %}">{{ object.category }}</a>{% endif %}
                             </div>
 {#                            <div class="float-right">#}
 {#                                <div class="media">#}
@@ -85,9 +85,17 @@
                             <p class="mb-0">Date: {% if object.start_date and object.start_date < object.end_date %}{{ object.start_date }} - {% endif %}{{ object.end_date }}</p>
                             <p class="mb-0">Time: {% if object.start_time %}{{ object.start_time }}{% endif %} - {% if object.end_time %}{{ object.end_time }} {% endif %} </p>
                         </blockquote>
-
+                            {% if user.is_authenticated and user == object.author %}
                             <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>
-                            <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>
+                            <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>{% endif %}
+                    <br>
+                                        <div>
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}" style="color:Green;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            </div>
                         <div class="news_d_footer">
                             <a href="#"><i class="lnr lnr lnr-heart"></i>Lily and 4 people like this</a>
                             <a class="justify-content-center ml-auto" href="#"><i class="lnr lnr lnr-bubble"></i>06

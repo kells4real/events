@@ -6,6 +6,13 @@ from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder
 from .custom_layout_object import *
 
 
+class EmailForm(forms.ModelForm):
+
+    class Meta:
+        model = Emails
+        exclude = ()
+
+
 class TicketTypeForm(forms.ModelForm):
 
     class Meta:
@@ -33,7 +40,7 @@ class EventForm(forms.ModelForm):
         model = Event
         widgets = {'start_date': DateInput(), 'end_date': DateInput(),
                    'start_time': TimeInput(), 'end_time': TimeInput()}
-        exclude = ['author', 'slug']
+        exclude = ['author', 'slug', 'approved', 'feat']
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)

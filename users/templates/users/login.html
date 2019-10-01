@@ -6,16 +6,28 @@
  </header>
 
     <div class="content-section" id="login">
+                                        <div>
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}" style="color:Green;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+    <br>
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
+                <legend class="border-bottom mb-4" style="text-align: center">Sign In</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group text-center">
                 <button class="btn btn-outline-info" type="submit">Login</button>
                 <small class="text-muted ml-2">
                     <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                    <br>
+                </small>
+                <small class="text-muted ml-2">
+                Not Already Registered? <a href="{% url 'register' %}">Sign Up</a>
                 </small>
             </div>
         </form>

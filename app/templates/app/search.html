@@ -91,8 +91,10 @@
 				<div class="col-lg-12 post-list">
 					<!-- Start Post Area -->
 					<section class="post-area">
+                    {% if object in object_list >= 1 %} <h2>Showing Results For Related Search</h2>
+{#                                {% else %}<h2>No Results For Your Search</h2>#}
+                    {% endif %}
 						<div class="row">{% for events in object_list %}
-{#                            {% if events.end_date > today %}#}
                             {% if events.approved == True %}
 							<div class="col-lg-4 col-md-6">
 
@@ -102,12 +104,13 @@
                                         {% endif %}
 									</div>
 									<div class="post-details">
-										<h4><a href="#">{{ events.title }}</a></h4>
+										<h4><a href="{% url 'app:event_detail' events.slug %}">{{ events.title }}</a></h4>
 										<p>{{ events.description|truncatechars:40 }}</p>
 										<div class="blog-meta">
-											<a href="#" class="m-gap"><span class="lnr lnr-calendar-full"></span>{{ events.start_date }}</a>
-											<a href="#" class="m-gap"><span class="lnr lnr-calendar-full"></span>{{ events.end_date }}</a>
-										</div>
+											{% if events.start_date %}<a href="#" class="m-gap"><span class="lnr lnr-calendar-full"></span>{{ events.start_date }}</a>{% endif %}
+											{% if events.end_date %}<a href="#" class="m-gap"><span class="lnr lnr-calendar-full"></span>{{ events.end_date }}</a>{% endif %}
+										        {% if events.category %}<a href="#">{{ events.category }}</a>{% endif %}
+                                        </div>
 									</div>
 								</div>
 							</div>
@@ -117,28 +120,29 @@
 
 
 
-							<div class="col-lg-12">
+<div class="col-lg-12">
 								<nav class="blog-pagination justify-content-center d-flex">
 									<ul class="pagination">
-										<li class="page-item">
-											<a href="#" class="page-link" aria-label="Previous">
-												<span aria-hidden="true">
-													<span class="lnr lnr-arrow-left"></span>
-												</span>
-											</a>
-										</li>
-										<li class="page-item"><a href="#" class="page-link">01</a></li>
-										<li class="page-item active"><a href="#" class="page-link">02</a></li>
-										<li class="page-item"><a href="#" class="page-link">03</a></li>
-										<li class="page-item"><a href="#" class="page-link">04</a></li>
-										<li class="page-item"><a href="#" class="page-link">09</a></li>
-										<li class="page-item">
-											<a href="#" class="page-link" aria-label="Next">
-												<span aria-hidden="true">
-													<span class="lnr lnr-arrow-right"></span>
-												</span>
-											</a>
-										</li>
+{#										                            {% if is_paginated %}#}
+{##}
+{#      {% if page_obj.has_previous %}#}
+{#        <a class="btn btn-outline-info mb-3" href="?page=1">First</a>#}
+{#        <a class="btn btn-outline-info mb-3" href="?page={{ page_obj.previous_page_number }}">Previous</a>#}
+{#      {% endif %}#}
+{##}
+{#      {% for num in page_obj.paginator.page_range %}#}
+{#        {% if page_obj.number == num %}#}
+{#          <a class="btn btn-info mb-3" href="?page={{ num }}">{{ num }}</a>#}
+{#        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}#}
+{#          <a class="btn btn-outline-info mb-3" href="?page={{ num }}">{{ num }}</a>#}
+{#        {% endif %}#}
+{#      {% endfor %}#}
+{##}
+{#      {% if page_obj.has_next %}#}
+{#        <a class="btn btn-outline-info mb-3" href="?page={{ page_obj.next_page_number }}">Next</a>#}
+{#        <a class="btn btn-outline-info mb-3" href="?page={{ page_obj.paginator.num_pages }}">Last</a>#}
+{#      {% endif %}#}
+{#        {% endif %}#}
 									</ul>
 								</nav>
 							</div>

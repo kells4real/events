@@ -64,11 +64,13 @@
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="{% url 'app:home' %}">Home</a></li>
-						<li><a href="category.html">Category</a></li>
-						<li><a href="archive.html">Archive</a></li>
+						{% if user.is_authenticated %}<li><a href="{% url 'app:event_create' %}">Create Event</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}<li><a href="{% url 'login' %}">Login</a></li>{% endif %}
+						<li><a href="">Archive</a></li>
 						<li class="menu-has-children"><a href="">Pages</a>
-							<ul>
-								<li><a href="elements.html">Elements</a></li>
+							<ul>{% for category in object_list %}
+								<li>{{ category.name }}</li>{% endfor %}
 							</ul>
 						</li>
 						<li class="menu-has-children"><a href="">Blog</a>

@@ -1,0 +1,16 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<br>
+    <br>
+    <br>
+    <br>
+    {% block title %}Email Verification Invalid!{% endblock title %}
+  <h3>The confirmation link was invalid, this is most likely because it has already been used,
+      or a newer verification link was sent to you.</h3>
+    <br>
+    <h4><a href="{% url 'register' %}">Sign Up</a></h4>
+    <br>
+
+{% endblock content %}
+

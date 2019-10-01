@@ -8,9 +8,12 @@ from django.db import transaction
 from django.db.models import Q
 from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import random as ran
 
 
 class EventDetailView(DetailView):
@@ -20,32 +23,70 @@ class EventDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
+        context['owner'] = self.request.user
         return context
 
 
 class Home(ListView):
     model = Event
     template_name = 'app/index.html'
+    paginate_by = 12
 
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
         context['today'] = date.today()
+        popular = FeaturedEvent.objects.get(slug='popular').event_set.order_by('end_date')
+        ads = FeaturedEvent.objects.get(slug='ads').event_set.order_by('end_date')
+        context.update({
+            'popular': popular,
+            'ads': ads
+        })
 
         return context
 
     def get_queryset(self):
-        return Event.objects.all().order_by('-end_date')
+        return Event.objects.all().order_by('category')
+
+
+class Category(ListView):
+    model = Hashtag
+    template_name = 'app/base.html'
+
+
+def category_details(request, slug):
+    categories = Hashtag.objects.get(slug=slug)
+    event = categories.event_set.all()
+    #
+    # page = request.GET.get('page', 1)
+    #
+    # paginator = Paginator(event, 10)
+    # try:
+    #     users = paginator.page(page)
+    # except PageNotAnInteger:
+    #     users = paginator.page(1)
+    # except EmptyPage:
+    #     users = paginator.page(paginator.num_pages)
+
+    context = {
+        "event": event,
+        # "users": users
+    }
+
+    return render(request, "app/category_details.html", context)
 
 
 class SearchResultsView(ListView):
     model = Event
     template_name = 'app/search.html'
+    paginate_by = 9
 
     def get_queryset(self):
         query = self.request.GET.get('q')
         object_list = Event.objects.filter(
-            Q(title__icontains=query) | Q(category__name__icontains=query)
+            Q(title__icontains=query) | Q(category__name__icontains=query) |
+            Q(state__name__icontains=query)
         )
+
         return object_list
 
 
@@ -72,6 +113,9 @@ class EventCreate(LoginRequiredMixin, CreateView):
             if titles.is_valid():
                 titles.instance = self.object
                 titles.save()
+
+        messages.success(self.request, f'Thank You For Creating an Event. '
+                         f'Your Post will be reviewed and you will be able to see it soon upon approval..')
         return super(EventCreate, self).form_valid(form)
 
     def get_success_url(self):

@@ -10,4 +10,5 @@ urlpatterns = [
     path('events/create/new', EventCreate.as_view(), name='event_create'),
     path('events/update/<slug:slug>/', EventUpdate.as_view(), name='event_update'),
     path('events/delete/<slug:slug>/', EventDelete.as_view(), name='event_delete'),
+    path('events/category/<slug:slug>/', category_details, name="category")
 ]
