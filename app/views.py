@@ -10,10 +10,49 @@ from datetime import date
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 # Create your views here.
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import random as ran
+from datetime import datetime
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .api import EventSerializer, UsersSerializer, EventDetailSerializer
+
+
+# Api Class To List All Events or Create One
+class EventApiList(APIView):
+
+    def get(self, request):
+        events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
+
+        return Response(serializer.data)
+
+    def post(self):
+        pass
+
+
+class EventApiDetail(APIView):
+
+    def get(self, request, slug):
+        event = Event.objects.get(slug=slug)
+        serializer = EventDetailSerializer(event)
+
+        return Response(serializer.data)
+
+    def post(self):
+        pass
+
+
+class UsersApiList(APIView):
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UsersSerializer(users, many=True)
+
+        return Response(serializer.data)
+
+    def post(self):
+        pass
 
 
 class EventDetailView(DetailView):
@@ -21,10 +60,11 @@ class EventDetailView(DetailView):
     model = Event
     template_name = 'app/event_detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(EventDetailView, self).get_context_data(**kwargs)
-        context['owner'] = self.request.user
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(EventDetailView, self).get_context_data(**kwargs)
+    #     context['owner'] = self.request.user
+    #
+    #     return context
 
 
 class Home(ListView):
@@ -39,7 +79,8 @@ class Home(ListView):
         ads = FeaturedEvent.objects.get(slug='ads').event_set.order_by('end_date')
         context.update({
             'popular': popular,
-            'ads': ads
+            'ads': ads,
+            'year': datetime.now().year
         })
 
         return context
@@ -48,30 +89,20 @@ class Home(ListView):
         return Event.objects.all().order_by('category')
 
 
-class Category(ListView):
-    model = Hashtag
-    template_name = 'app/base.html'
+# class Category(ListView):
+#     model = Hashtag
+#     template_name = 'app/base.html'
 
 
 def category_details(request, slug):
-    categories = Hashtag.objects.get(slug=slug)
-    event = categories.event_set.all()
-    #
-    # page = request.GET.get('page', 1)
-    #
-    # paginator = Paginator(event, 10)
-    # try:
-    #     users = paginator.page(page)
-    # except PageNotAnInteger:
-    #     users = paginator.page(1)
-    # except EmptyPage:
-    #     users = paginator.page(paginator.num_pages)
+    category = Hashtag.objects.get(slug=slug)
+    event = category.event_set.all()
 
     context = {
+        "today": date.today(),
         "event": event,
-        # "users": users
+        "category": category
     }
-
     return render(request, "app/category_details.html", context)
 
 
@@ -84,10 +115,16 @@ class SearchResultsView(ListView):
         query = self.request.GET.get('q')
         object_list = Event.objects.filter(
             Q(title__icontains=query) | Q(category__name__icontains=query) |
-            Q(state__name__icontains=query)
+            Q(state__name__icontains=query) | Q(state__name__icontains=query + "state")
         )
 
         return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['ads'] = FeaturedEvent.objects.get(slug='ads').event_set.order_by('end_date')
+
+        return context
 
 
 class EventCreate(LoginRequiredMixin, CreateView):

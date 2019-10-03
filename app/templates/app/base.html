@@ -66,8 +66,10 @@
 						<li class="menu-active"><a href="{% url 'app:home' %}">Home</a></li>
 						{% if user.is_authenticated %}<li><a href="{% url 'app:event_create' %}">Create Event</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
-                        {% else %}<li><a href="{% url 'login' %}">Login</a></li>{% endif %}
-						<li><a href="">Archive</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        {% else %}<li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
+
 						<li class="menu-has-children"><a href="">Pages</a>
 							<ul>{% for category in object_list %}
 								<li>{{ category.name }}</li>{% endfor %}
@@ -95,6 +97,27 @@
 		</div>
 	</header>
 	<!-- End header Area -->
+    	<section class="top-stories-area">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="owl-carousel active-stories-carousel">
+						<!-- single stories carousel -->{% for event in ads %}
+						<div class="single-stories-carousel d-flex align-items-center">
+							<div class="stories-thumb">
+								<img class="img-fluid" src="{{ event.flyer.url }}" alt="">
+							</div>
+							<div class="stories-details">
+								<h6><a href="{% url 'app:event_detail' event.slug %}">{{ event.title }}</a></h6>
+								<p>{{ event.end_date }}</p>
+							</div>
+						</div>{% endfor %}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 {% block content %}
 {% endblock content %}

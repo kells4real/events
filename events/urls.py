@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from users import views as user_views
+from app import views as api_view
+# from rest_framework.
 
 
 admin.site.site_header = "Events Admin"
@@ -12,7 +14,11 @@ admin.site.site_title = "Events Admin Portal"
 admin.site.index_title = "Welcome To Events Administration Backend"
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
+    path('api/events/', api_view.EventApiList.as_view()),
+    path('api/users/', api_view.UsersApiList.as_view()),
+    path('api/events/<slug:slug>/', api_view.EventApiDetail.as_view()),
     path('', include("app.urls")),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.display_profile, name='profile'),

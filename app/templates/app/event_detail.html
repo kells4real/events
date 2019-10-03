@@ -87,8 +87,8 @@
                         </blockquote>
                             {% if user.is_authenticated and user == object.author %}
                             <a class="btn btn-outline-info" href="{% url 'app:event_update' slug=object.slug %}">Update</a>
-                            <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>{% endif %}
-                    <br>
+                            <a class="btn btn-outline-danger" href="{% url 'app:event_delete' slug=object.slug %}">Delete</a>
+                    <br>{% endif %}
                                         <div>
             <ul class="messages">
                 {% for message in messages %}
